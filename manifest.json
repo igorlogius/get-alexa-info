@@ -1,11 +1,13 @@
 {
   "author": "igorlogius",
-  "browser_action": {
-    "default_popup": "popup.html"
+  "background": {
+	"scripts": [ "background.js" ]
   },
-  "description": "",
+  "browser_action": {
+  },
+  "description": "display alexa minisite info in a toolbar button popup",
   "manifest_version": 2,
-  "name": "get-alexa-rank",
+  "name": "get-alexa-info",
   "permissions": [
     "activeTab"
   ],
