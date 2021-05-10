@@ -1,0 +1,13 @@
+{
+  "author": "igorlogius",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "description": "",
+  "manifest_version": 2,
+  "name": "get-alexa-rank",
+  "permissions": [
+    "activeTab"
+  ],
+  "version": "0.1.0"
+}
