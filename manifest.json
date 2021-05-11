@@ -8,11 +8,15 @@
   "icons": {
 	"128": "icon.png"
   },
-  "description": "display alexa minisite info in a toolbar button popup",
+  "description": "display alexa information",
   "manifest_version": 2,
   "name": "get-alexa-info",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "https://www.alexa.com/minisiteinfo/*"
   ],
-  "version": "0.2.1"
+  "optional_permissions": [
+    "webNavigation"
+  ],
+  "version": "0.3.1"
 }
