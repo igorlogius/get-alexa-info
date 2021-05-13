@@ -6,9 +6,6 @@
   "browser_action": {
 	  "default_title": "alexa info"
   },
-  "page_action": {
-	  "default_title": "alexa rank"
-  },
   "icons": {
 	"128": "icon.png"
   },
@@ -22,5 +19,5 @@
   "optional_permissions": [
     "webNavigation"
   ],
-  "version": "0.4.1"
+  "version": "0.4.2"
 }
