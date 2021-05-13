@@ -2,6 +2,11 @@
 const infourl = "https://www.alexa.com/minisiteinfo/";
 const parser = new DOMParser();
 
+browser.browserAction.setBadgeBackgroundColor({
+    color: "blue"
+});
+
+
 // host => ImageData
 let host_imageData = {}
 
@@ -77,12 +82,14 @@ async function onCompleted(details) {
 	try {
 		if(details.frameId !== 0) { return; }
 
-		browser.pageAction.hide(details.tabId);
+		//browser.pageAction.hide(details.tabId);
+
+		browser.browserAction.setBadgeText({tabId: details.tabId, text: ""});
 
 		const url = new URL(details.url);
 		const host = url.host.trim();
 
-		if(typeof host !== 'string' || host === '') {
+		if(typeof host !== 'string' || host === null || host === '') {
 			return;
 		}
 
@@ -92,13 +99,21 @@ async function onCompleted(details) {
 			const res_text = await res.text();
 			const doc = parser.parseFromString(res_text,'text/html');
 			const rank = doc.documentElement.querySelector('span.hash').nextSibling.textContent.trim();
-			host_imageData[host] = getIconImageData(rank);
+			host_imageData[host] = rank; //getIconImageData(rank);
 		}
+		/*
 		browser.pageAction.setIcon({
 			imageData: host_imageData[host], 
 			tabId: details.tabId
 		});
-		browser.pageAction.show(details.tabId);
+		*/
+
+		browser.browserAction.setBadgeText({
+			tabId: details.tabId,
+			text: shortTextForNumber(strToInt(host_imageData[host]))
+		});
+
+		//browser.pageAction.show(details.tabId);
 
 	}catch(e) {
 	}
