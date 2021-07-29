@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# variables
-ID="get-alexa-info"
-BRANCH="main"
+# AMO URL
+AMO='https://addons.mozilla.org/en-US/firefox/addon/get-alexa-info'
 
 # check dependencies
 MISSING_REQ=0
@@ -11,15 +10,18 @@ for req in mktemp wget unzip zip grep cut date;do
 done
 [ $MISSING_REQ -ne 0 ] && { echo "Aborting because of missing dependency"; exit 1; }
 
+# addon/repo name
+ID=$(basename "$AMO")
+
 # create tmp storage
 ZIPFILE=$(mktemp)
 EXTRDIR=$(mktemp -d)
 
 # download latest source
-wget -q --show-progress "https://github.com/igorlogius/$ID/archive/$BRANCH.zip" -O $ZIPFILE
+wget -q --show-progress "https://github.com/igorlogius/$ID/archive/main.zip" -O $ZIPFILE
 
 # extract without paths and README and example_config.json
-unzip -j $ZIPFILE -d $EXTRDIR -x "*/README" "*/example_config.json"
+unzip -j $ZIPFILE -d $EXTRDIR -x "*/README" "*/main.yml" 
 
 # re-pack as xpi (zip) without paths and extended file attributes 
 XPI="$ID-$(grep '"version"' $EXTRDIR/manifest.json |cut -d'"' -f4)-$(date '+%F_%H-%M').xpi" 
@@ -31,6 +33,5 @@ rm -f $EXTRDIR/* && rmdir $EXTRDIR/
 # show content of xpi
 unzip -l $XPI
 
-echo "Homepage:  https://addons.mozilla.org/en-US/firefox/addon/$ID"
 # conditional export of artifact name for github release workflow 
 [ -z ${GITHUB_ENV+x} ] || { echo "ARTNAME=$XPI" >> $GITHUB_ENV; }
