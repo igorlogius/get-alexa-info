@@ -60,7 +60,7 @@ function onClicked(tab,onClickData) {
 	let popupurl = "error.html";
 	try {
 		const url = new URL(tab.url);
-		const host = url.hostname.replace(/^www\./,''); 
+		const host = url.hostname; //.replace(/^www\./,'')
 
 		if(typeof host === 'string' && host !== '') {
 			popupurl = infourl + host;
