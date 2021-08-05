@@ -60,7 +60,7 @@ function onClicked(tab,onClickData) {
 	let popupurl = "error.html";
 	try {
 		const url = new URL(tab.url);
-		const host = url.hostname; //.replace(/^www\./,'')
+		const host = url.hostname; 
 
 		if(typeof host === 'string' && host !== '') {
 			popupurl = infourl + host;
@@ -79,6 +79,8 @@ function onClicked(tab,onClickData) {
 browser.browserAction.onClicked.addListener(onClicked); 
 
 async function onCompleted(details) {
+
+
 	try {
 		if(details.frameId !== 0) { return; }
 
@@ -91,6 +93,13 @@ async function onCompleted(details) {
 
 		if(typeof host !== 'string' || host === null || host === '') {
 			return;
+		}
+
+		// make sidebar permission optional 
+		// check if sidebar permission is given
+		const panel_isopen = await browser.sidebarAction.isOpen({});
+		if(panel_isopen){
+			await browser.sidebarAction.setPanel({tabId: details.tabId, panel: infourl+host });
 		}
 
 		if (typeof host_imageData[host] === 'undefined') {
