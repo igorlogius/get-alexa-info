@@ -21,7 +21,7 @@
   ],
   "sidebar_action": {
 	 "default_panel": "info.html",
-	 "open_at_install": true
+	 "open_at_install": false
   },
-  "version": "1.5.4"
+  "version": "1.5.5"
 }
