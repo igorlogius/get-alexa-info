@@ -4,7 +4,7 @@
 	"scripts": [ "background.js" ]
   },
   "browser_action": {
-	  "default_title": "alexa info"
+	  "default_popup": "popup.html"
   },
   "icons": {
 	"128": "icon.png"
@@ -20,8 +20,8 @@
     "webNavigation"
   ],
   "sidebar_action": {
-	 "default_panel": "error.html",
-	 "open_at_install": false
+	 "default_panel": "info.html",
+	 "open_at_install": true
   },
-  "version": "0.5.4"
+  "version": "1.5.4"
 }

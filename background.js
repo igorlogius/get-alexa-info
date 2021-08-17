@@ -55,9 +55,10 @@ function getIconImageData(rank) {
     return ctx.getImageData(0, 0, imageWidth, imageHeight);
 }
 
+/*
 function onClicked(tab,onClickData) {
 
-	let popupurl = "error.html";
+	let popupurl = "info.html";
 	try {
 		const url = new URL(tab.url);
 		const host = url.hostname; 
@@ -77,6 +78,7 @@ function onClicked(tab,onClickData) {
 }
 
 browser.browserAction.onClicked.addListener(onClicked); 
+*/
 
 async function onCompleted(details) {
 

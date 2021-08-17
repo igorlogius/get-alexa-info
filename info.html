@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>sidebar</title>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<style>
+			body { 
+				background: lightgray;
+				padding: 3px;
+				margin: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 style="text-align:center">Loading ...</h1>
+		<img src="loading.gif" style="width:50%;margin-left:25%;" />
+
+		<ol>
+		<h2>You should only see this page if... </h2>
+		<li>the sidebar was opend after the last navigation happend, curently the sidebar content update is triggered by the webNavigation event only, since there is no onSidebarOpened event available yet.</li>
+		<li>the active tab has no valid host part (newtab,about:,moz-ext: ...), so there is nothing to display</li>
+		<li>the addon has not been given the required permission for the sidebar display to work</li>
+		</ol>
+	</body>
+</html>
