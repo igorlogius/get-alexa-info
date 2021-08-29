@@ -1,16 +1,12 @@
 (async function init() {
-	const myframe = document.getElementById('myframe');
 	try {
-		let tmp = await browser.tabs.executeScript({ code: 'window.location.href' });
-		tmp = tmp[0];
+		let tmp = await browser.runtime.sendMessage("ping");
 		const url = new URL(tmp);
-		const host = url.host;
-		const infourl = "https://www.alexa.com/minisiteinfo/"
-		const iframe_src = infourl + host;
-		myframe.src = iframe_src;
-	}catch(e){
-		myframe.remove();
-		document.body.innerHTML = '<p> no valid host/domain part for tab found <p>';
-		console.error(e);
+		if(typeof url.hostname !== 'string' || url.hostname === '') { throw "tab url has no valid domain name"; }
+		document.getElementById('myframe').src = "https://www.alexa.com/minisiteinfo/" + encodeURIComponent(url.hostname);
+	}catch(e) {
+		console.error(e.toString());
+		document.body.innerHTML = `<p> ${e.toString()} <p>`;
+		//myframe.remove();
 	}
 }());

@@ -6,27 +6,25 @@ browser.browserAction.setBadgeBackgroundColor({
     color: "blue"
 });
 
-
 // host => ImageData
 let host_imageData = {}
 
+function shortTextForNumber (number) {
+	if (number < 1000) {
+		return number.toString()
+	} else if (number < 100000) {
+		return Math.floor(number / 1000)
+			.toString() + "k"
+	} else if (number < 1000000) {
+		return Math.floor(number / 100000)
+			.toString() + "hk"
+	} else {
+		return Math.floor(number / 1000000)
+			.toString() + "m"
+	}
+}
 
-    const shortTextForNumber = (number) => {
-        if (number < 1000) {
-            return number.toString()
-        } else if (number < 100000) {
-            return Math.floor(number / 1000)
-                .toString() + "k"
-        } else if (number < 1000000) {
-            return Math.floor(number / 100000)
-                .toString() + "hk"
-        } else {
-            return Math.floor(number / 1000000)
-                .toString() + "m"
-        }
-    }
-
-const strToInt = (str) => {
+function strToInt(str) {
 	// Numbers are displayed as strings with delimeters (e.g. 123,564).
 	return parseInt(str.trim()
 		.replace(/,/g, ""))
@@ -41,7 +39,7 @@ function getIconImageData(rank) {
     const color = /* options.addressbar_text_color ? options.addressbar_text_color : */ "#444";
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const addText = (ctx, text, centerX, centerY) => {
+    const addText = function(ctx, text, centerX, centerY) {
         ctx.font = font;
         ctx.fillStyle = color;
         ctx.textAlign = "center"
@@ -55,33 +53,7 @@ function getIconImageData(rank) {
     return ctx.getImageData(0, 0, imageWidth, imageHeight);
 }
 
-/*
-function onClicked(tab,onClickData) {
-
-	let popupurl = "info.html";
-	try {
-		const url = new URL(tab.url);
-		const host = url.hostname; 
-
-		if(typeof host === 'string' && host !== '') {
-			popupurl = infourl + host;
-		}
-	}catch(e) {
-	}
-
-	browser.browserAction.setPopup({
-		tabId: tab.id,
-		popup: popupurl
-	});
-
-	browser.browserAction.openPopup();
-}
-
-browser.browserAction.onClicked.addListener(onClicked); 
-*/
-
 async function onCompleted(details) {
-
 
 	try {
 		if(details.frameId !== 0) { return; }
@@ -135,7 +107,7 @@ var testPermissions = {
 	permissions: ["webNavigation"]
 };
 
-browser.permissions.contains(testPermissions).then((result) => {
+browser.permissions.contains(testPermissions).then( function(result) {
 	if(result) {
 		browser.webNavigation.onCompleted.addListener(onCompleted);
 	}
@@ -147,3 +119,7 @@ function handleAdded(permissions) {
 
 browser.permissions.onAdded.addListener(handleAdded);
 
+browser.runtime.onMessage.addListener( async function(msg, sender) {
+	const tab =  await browser.tabs.query({currentWindow: true, active: true});
+	return tab[0].url;
+});
