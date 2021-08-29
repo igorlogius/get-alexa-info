@@ -6,8 +6,8 @@ browser.browserAction.setBadgeBackgroundColor({
     color: "blue"
 });
 
-// host => ImageData
-let host_imageData = {}
+// domain => ImageData
+let domain_imageData = {}
 
 function shortTextForNumber (number) {
 	if (number < 1000) {
@@ -63,9 +63,9 @@ async function onCompleted(details) {
 		browser.browserAction.setBadgeText({tabId: details.tabId, text: ""});
 
 		const url = new URL(details.url);
-		const host = url.host.trim();
+		const domain = url.hostname;
 
-		if(typeof host !== 'string' || host === null || host === '') {
+		if(typeof domain !== 'string' || domain === null || domain === '') {
 			return;
 		}
 
@@ -73,27 +73,27 @@ async function onCompleted(details) {
 		// check if sidebar permission is given
 		const panel_isopen = await browser.sidebarAction.isOpen({});
 		if(panel_isopen){
-			await browser.sidebarAction.setPanel({tabId: details.tabId, panel: infourl+host });
+			await browser.sidebarAction.setPanel({tabId: details.tabId, panel: infourl+domain });
 		}
 
-		if (typeof host_imageData[host] === 'undefined') {
-			const popupurl = infourl + host;
+		if (typeof domain_imageData[domain] === 'undefined') {
+			const popupurl = infourl + domain;
 			const res = await fetch(popupurl);
 			const res_text = await res.text();
 			const doc = parser.parseFromString(res_text,'text/html');
 			const rank = doc.documentElement.querySelector('span.hash').nextSibling.textContent.trim();
-			host_imageData[host] = rank; //getIconImageData(rank);
+			domain_imageData[domain] = rank; //getIconImageData(rank);
 		}
 		/*
 		browser.pageAction.setIcon({
-			imageData: host_imageData[host], 
+			imageData: domain_imageData[domain], 
 			tabId: details.tabId
 		});
 		*/
 
 		browser.browserAction.setBadgeText({
 			tabId: details.tabId,
-			text: shortTextForNumber(strToInt(host_imageData[host]))
+			text: shortTextForNumber(strToInt(domain_imageData[domain]))
 		});
 
 		//browser.pageAction.show(details.tabId);
