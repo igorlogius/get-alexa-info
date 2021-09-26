@@ -17,7 +17,7 @@
     "https://www.alexa.com/minisiteinfo/*"
   ],
   "optional_permissions": [
-    "tabs"
+    "webNavigation"
   ],
   "sidebar_action": {
 	 "default_panel": "sidebar.html",
@@ -25,5 +25,5 @@
 	 "default_icon": "icon.png",
 	 "default_title": "Get Alexa Info"
   },
-  "version": "1.7.10"
+  "version": "1.7.11"
 }
