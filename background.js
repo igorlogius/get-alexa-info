@@ -114,7 +114,7 @@ browser.permissions.contains(testPermissions).then( function(result) {
 });
 
 function handleAdded(permissions) {
-	browser.webNavigation.onCompleted.addListener(onCompleted);
+	browser.webNavigation.onCommitted.addListener(onCompleted);
 }
 
 browser.permissions.onAdded.addListener(handleAdded);
