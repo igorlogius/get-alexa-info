@@ -1,12 +1,12 @@
 
 const infourl = "https://www.alexa.com/minisiteinfo/";
 const parser = new DOMParser();
+const permissionStr = "webNavigation";
+const testPermissions = {
+	permissions: [ permissionStr ]
+};
 
-browser.browserAction.setBadgeBackgroundColor({
-    color: "blue"
-});
-
-// domain => ImageData
+// domain => ImageData/rank
 let domain_imageData = {}
 
 function shortTextForNumber (number) {
@@ -69,8 +69,6 @@ async function onCompleted(details) {
 			return;
 		}
 
-		// make sidebar permission optional 
-		// check if sidebar permission is given
 		const panel_isopen = await browser.sidebarAction.isOpen({});
 		if(panel_isopen){
 			await browser.sidebarAction.setPanel({tabId: details.tabId, panel: infourl+domain });
@@ -100,12 +98,24 @@ async function onCompleted(details) {
 
 	}catch(e) {
 	}
-
 }
 
-var testPermissions = {
-	permissions: ["webNavigation"]
-};
+browser.permissions.onAdded.addListener( function handleAdded(permissions) {
+	if(permissions.permissions.includes(permissionStr)) {
+		browser.webNavigation.onCompleted.addListener(onCompleted);
+	}
+});
+
+browser.permissions.onRemoved.addListener( function(permissions) {
+	if(permissions.permissions.includes(permissionStr)) {
+		browser.sidebarAction.setPanel({panel: "sidebar.html"});
+	}
+});
+
+browser.runtime.onMessage.addListener( async function(msg, sender) {
+	const tab =  await browser.tabs.query({currentWindow: true, active: true});
+	return tab[0].url;
+});
 
 browser.permissions.contains(testPermissions).then( function(result) {
 	if(result) {
@@ -113,13 +123,7 @@ browser.permissions.contains(testPermissions).then( function(result) {
 	}
 });
 
-function handleAdded(permissions) {
-	browser.webNavigation.onCommitted.addListener(onCompleted);
-}
-
-browser.permissions.onAdded.addListener(handleAdded);
-
-browser.runtime.onMessage.addListener( async function(msg, sender) {
-	const tab =  await browser.tabs.query({currentWindow: true, active: true});
-	return tab[0].url;
+browser.browserAction.setBadgeBackgroundColor({
+    color: "blue"
 });
+

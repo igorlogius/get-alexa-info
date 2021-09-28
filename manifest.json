@@ -4,6 +4,7 @@
 	"scripts": [ "background.js" ]
   },
   "browser_action": {
+	  "default_title": "Get Alexa Info",
 	  "default_popup": "popup.html"
   },
   "icons": {
@@ -25,5 +26,5 @@
 	 "default_icon": "icon.png",
 	 "default_title": "Get Alexa Info"
   },
-  "version": "1.8.12"
+  "version": "1.8.13"
 }
