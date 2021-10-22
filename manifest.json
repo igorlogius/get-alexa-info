@@ -14,7 +14,8 @@
   "manifest_version": 2,
   "name": "get-alexa-info",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "https://www.alexa.com/minisiteinfo/*"
   ],
   "optional_permissions": [
     "webNavigation"
@@ -25,5 +26,5 @@
 	 "default_icon": "icon.png",
 	 "default_title": "Get Alexa Info"
   },
-  "version": "1.8.14"
+  "version": "1.8.15"
 }
