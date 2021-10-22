@@ -76,15 +76,31 @@ async function onCompleted(details) {
 
 		if (typeof domain_imageData[domain] === 'undefined') {
 			const popupurl = infourl + domain;
-			const res = await fetch(popupurl);
-			const res_text = await res.text();
+
+			const res_text = await (async function (url){
+				return new Promise( (resolve,reject) => {
+					let xhr = new XMLHttpRequest();
+					xhr.onload = function() {
+						if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+								resolve(xhr.responseText);
+						}else {
+								reject('invalid response type');
+						}
+					}
+					xhr.addEventListener("error", reject);
+					xhr.open('GET', url);
+					xhr.send();
+				});
+			})(popupurl);
+
+			//const res_text = await res.text();
 			const doc = parser.parseFromString(res_text,'text/html');
 			const rank = doc.documentElement.querySelector('span.hash').nextSibling.textContent.trim();
 			domain_imageData[domain] = rank; //getIconImageData(rank);
 		}
 		/*
 		browser.pageAction.setIcon({
-			imageData: domain_imageData[domain], 
+			imageData: domain_imageData[domain],
 			tabId: details.tabId
 		});
 		*/
@@ -126,4 +142,3 @@ browser.permissions.contains(testPermissions).then( function(result) {
 browser.browserAction.setBadgeBackgroundColor({
     color: "blue"
 });
-
